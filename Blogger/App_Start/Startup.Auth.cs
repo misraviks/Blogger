@@ -58,11 +58,11 @@ namespace Blogger
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "136108131670-faqgkuj4t9uq454ofstk423tbo35o3cp.apps.googleusercontent.com ",
+                ClientSecret = "7e1LXdP1jxmQq604RYfJK7NR "
+            });
         }
     }
 }

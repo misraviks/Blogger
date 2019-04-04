@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Blogger.Models;
+using System.Net.Mail;
 
 namespace Blogger
 {
@@ -21,6 +22,49 @@ namespace Blogger
             // Plug in your email service here to send an email.
             return Task.FromResult(0);
         }
+        public Boolean SendMail(MailAddress mailFrom, List<MailAddress> mailTO, String subject, Boolean isBodyHTML, String body, 
+            List<MailAddress> mailCC=null, List<MailAddress> mailBCC = null)
+        {
+            Boolean status = false;
+            try
+            {
+                SmtpClient mailClient = new SmtpClient("localhost");
+                MailMessage msg = new MailMessage();
+                msg.From = mailFrom;
+                msg.Subject = subject;
+                msg.IsBodyHtml = isBodyHTML;
+                msg.Body = body;
+                msg.CC.Clear();
+                msg.To.Clear();
+                msg.Bcc.Clear();
+                foreach (MailAddress address in mailTO)
+                {
+                    msg.To.Add(address);
+                }
+                if (mailCC != null)
+                {
+                    foreach (MailAddress address in mailCC)
+                    {
+                        msg.CC.Add(address);
+                    }
+                }
+                if (mailBCC != null)
+                {
+                    foreach (MailAddress address in mailBCC)
+                    {
+                        msg.Bcc.Add(address);
+                    }
+                }
+                mailClient.Send(msg);
+                status = true;
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return status;
+        }
+        
     }
 
     public class SmsService : IIdentityMessageService
