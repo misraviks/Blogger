@@ -7,7 +7,8 @@ using System.Web.Mvc;
 
 namespace Blogger.Controllers
 {
-   // [UserAuthenticationFilter]
+    [UserAuthenticationFilter]
+    
     public class BaseController : Controller
     {
         // GET: Base

@@ -8,6 +8,17 @@ namespace Blogger.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Display(Name = "ID")]
+        public string id { get; set; }
+
+        [Display(Name = "Name")]
+        public string name { get; set; }
+
+        public string given_name { get; set; }
+
+        [Display(Name = "Pic")]
+        public string picture { get; set; }
     }
 
     public class ExternalLoginListViewModel
