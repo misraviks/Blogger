@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using Blogger.Models;
+using System.Configuration;
 
 namespace Blogger
 {
@@ -46,23 +47,23 @@ namespace Blogger
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            app.UseMicrosoftAccountAuthentication(
+                clientId: ConfigurationManager.AppSettings["MSClientCode"],
+                clientSecret: ConfigurationManager.AppSettings["MSClientCode"]);
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+            app.UseTwitterAuthentication(
+               consumerKey: ConfigurationManager.AppSettings["TWClientCode"],
+               consumerSecret: ConfigurationManager.AppSettings["TWClientCode"]);
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: ConfigurationManager.AppSettings["FBClientCode"],
+               appSecret: ConfigurationManager.AppSettings["FBClientCode"]);
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = ConfigurationManager.AppSettings["GoogleClientCode"],
+                ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"]
+            });
         }
     }
 }

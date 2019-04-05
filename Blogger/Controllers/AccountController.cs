@@ -13,6 +13,7 @@ using Blogger.Models;
 namespace Blogger.Controllers
 {
     [Authorize]
+    //[OutputCache(NoStore = true, Duration = 0)]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -322,17 +323,21 @@ namespace Blogger.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            TempData["UserID"] = "";
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
             }
-
+            
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
                 case SignInStatus.Success:
+                    Session["UserID"] = loginInfo.DefaultUserName;
+                    TempData["UserID"]= loginInfo.DefaultUserName;
+                    Session["UserEmail"] = loginInfo.Email;
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -391,6 +396,7 @@ namespace Blogger.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Session.Abandon();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
